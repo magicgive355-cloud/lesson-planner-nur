@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson Planner</title>
+    <title>Profesyonel Randevu Takvimi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Lesson Planner</h1>
+        <h1>Randevu Takvimi</h1>
 
-        <!-- Telefon Numarası Girişi -->
-        <div class="phone-section">
+        <div class="appointment-form">
             <label for="phone">Telefon Numarası:</label>
-            <input type="tel" id="phone" name="phone" placeholder="05XX XXX XX XX" required>
-            <button id="savePhone">Kaydet</button>
+            <input type="tel" id="phone" placeholder="05XX XXX XX XX">
+
+            <label for="date">Tarih:</label>
+            <input type="date" id="date">
+
+            <label for="time">Saat:</label>
+            <input type="time" id="time">
+
+            <button id="saveAppointment">Randevu Kaydet</button>
         </div>
 
-        <!-- Ders Planı Örneği -->
-        <div class="lesson-section">
-            <input type="text" id="lesson" placeholder="Ders ekle...">
-            <button id="addLesson">Ekle</button>
-            <ul id="lessonList"></ul>
-        </div>
+        <h2>Randevular</h2>
+        <div id="calendar"></div>
     </div>
 
     <script src="app.js"></script>
