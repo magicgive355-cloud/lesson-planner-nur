@@ -18,6 +18,25 @@ h1, h2 {
     text-align: center;
 }
 
+.controls {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.controls button {
+    background-color: #1800ad;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.controls button:hover {
+    background-color: #0f007f;
+}
+
 .appointment-form {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr auto;
@@ -80,4 +99,9 @@ h1, h2 {
     cursor: pointer;
     font-size: 12px;
     padding: 2px 5px;
+}
+
+.appointment-item button.edit {
+    background-color: orange;
+    margin-right: 5px;
 }
