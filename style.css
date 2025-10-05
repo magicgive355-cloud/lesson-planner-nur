@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 40px auto;
     background: white;
     padding: 20px;
@@ -18,28 +18,9 @@ h1, h2 {
     text-align: center;
 }
 
-.controls {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.controls button {
-    background-color: #1800ad;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    margin: 0 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.controls button:hover {
-    background-color: #0f007f;
-}
-
 .appointment-form {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 10px;
     margin-bottom: 20px;
 }
@@ -63,45 +44,6 @@ h1, h2 {
 }
 
 #calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-}
-
-.day {
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-}
-
-.day h3 {
-    margin-top: 0;
-    font-size: 16px;
-}
-
-.appointment-item {
-    background-color: #1800ad;
-    color: white;
-    padding: 4px;
-    margin: 4px 0;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.appointment-item button {
-    background-color: red;
-    border: none;
-    color: white;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
-    padding: 2px 5px;
-}
-
-.appointment-item button.edit {
-    background-color: orange;
-    margin-right: 5px;
+    max-width: 100%;
+    margin: 0 auto;
 }
