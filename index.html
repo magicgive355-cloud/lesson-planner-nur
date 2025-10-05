@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profesyonel Randevu Takvimi</title>
+    <title>Lesson Planner & Randevu Takvimi</title>
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Randevu Takvimi</h1>
-
-        <div class="controls">
-            <button id="prevWeek">⬅ Önceki Hafta</button>
-            <button id="nextWeek">Sonraki Hafta ➡</button>
-        </div>
+        <h1>Lesson Planner & Randevu Takvimi</h1>
 
         <div class="appointment-form">
+            <label for="student">Öğrenci İsmi:</label>
+            <input type="text" id="student" placeholder="Öğrenci Adı">
+
             <label for="phone">Telefon Numarası:</label>
             <input type="tel" id="phone" placeholder="05XX XXX XX XX">
+
+            <label for="lesson">Ders Adı / Not:</label>
+            <input type="text" id="lesson" placeholder="Ders veya not">
 
             <label for="date">Tarih:</label>
             <input type="date" id="date">
@@ -28,10 +33,12 @@
             <button id="saveAppointment">Randevu Kaydet</button>
         </div>
 
-        <h2>Randevular</h2>
+        <h2>Takvim</h2>
         <div id="calendar"></div>
     </div>
 
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
