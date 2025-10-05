@@ -2,11 +2,12 @@
 const studentInput = document.getElementById('student');
 const phoneInput = document.getElementById('phone');
 const lessonInput = document.getElementById('lesson');
+const notesInput = document.getElementById('notes');
 const dateInput = document.getElementById('date');
 const timeInput = document.getElementById('time');
 const saveBtn = document.getElementById('saveAppointment');
 
-let calendar; // FullCalendar instance
+let calendar;
 let editingIndex = null;
 
 // Telefon doğrulama
@@ -34,13 +35,16 @@ function initCalendar() {
             editAppointment(info.event.extendedProps.index);
         },
         eventDrop: info => {
-            // Sürükle bırak ile tarih/saat değiştir
             const index = info.event.extendedProps.index;
             const appointments = getAppointments();
             appointments[index].date = info.event.startStr.split('T')[0];
             appointments[index].time = info.event.startStr.split('T')[1].substring(0,5);
             saveAppointments(appointments);
         },
+        eventDidMount: info => {
+            // Mouse üzerine gelince detay göster
+            info.el.title = `Telefon: ${info.event.extendedProps.phone}\nNotlar: ${info.event.extendedProps.notes}`;
+        }
     });
     calendar.render();
     renderCalendar();
@@ -51,25 +55,26 @@ saveBtn.addEventListener('click', () => {
     const student = studentInput.value.trim();
     const phone = phoneInput.value.trim();
     const lesson = lessonInput.value.trim();
+    const notes = notesInput.value.trim();
     const date = dateInput.value;
     const time = timeInput.value;
 
-    if (!student || !phone || !lesson || !date || !time) {
-        alert('Tüm alanları doldurun!');
+    if (!student || !lesson || !date || !time) {
+        alert('Öğrenci adı, ders, tarih ve saat zorunludur!');
         return;
     }
 
-    if (!validatePhoneNumber(phone)) {
+    if (phone && !validatePhoneNumber(phone)) {
         alert('Geçerli bir telefon numarası girin (05XXXXXXXXX).');
         return;
     }
 
     const appointments = getAppointments();
     if (editingIndex !== null) {
-        appointments[editingIndex] = { student, phone, lesson, date, time };
+        appointments[editingIndex] = { student, phone, lesson, notes, date, time };
         editingIndex = null;
     } else {
-        appointments.push({ student, phone, lesson, date, time });
+        appointments.push({ student, phone, lesson, notes, date, time });
     }
 
     saveAppointments(appointments);
@@ -77,6 +82,7 @@ saveBtn.addEventListener('click', () => {
     studentInput.value = '';
     phoneInput.value = '';
     lessonInput.value = '';
+    notesInput.value = '';
     dateInput.value = '';
     timeInput.value = '';
 
@@ -90,9 +96,9 @@ function renderCalendar() {
 
     appointments.forEach((a,index) => {
         calendar.addEvent({
-            title: `${a.student} (${a.lesson})`,
+            title: `${a.student} - ${a.lesson}`,
             start: `${a.date}T${a.time}`,
-            extendedProps: { index },
+            extendedProps: { index, phone: a.phone, notes: a.notes },
             backgroundColor: '#1800ad',
             borderColor: '#0f007f'
         });
@@ -106,6 +112,7 @@ function editAppointment(index) {
     studentInput.value = a.student;
     phoneInput.value = a.phone;
     lessonInput.value = a.lesson;
+    notesInput.value = a.notes;
     dateInput.value = a.date;
     timeInput.value = a.time;
     editingIndex = index;
