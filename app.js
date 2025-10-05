@@ -3,22 +3,27 @@ const dateInput = document.getElementById('date');
 const timeInput = document.getElementById('time');
 const saveBtn = document.getElementById('saveAppointment');
 const calendar = document.getElementById('calendar');
+const prevWeekBtn = document.getElementById('prevWeek');
+const nextWeekBtn = document.getElementById('nextWeek');
 
+let currentWeekStart = new Date();
+
+// Telefon doğrulama
 function validatePhoneNumber(phone) {
     return /^05\d{9}$/.test(phone);
 }
 
-// LocalStorage’dan randevuları çek
+// LocalStorage işlemleri
 function getAppointments() {
     return JSON.parse(localStorage.getItem('appointments') || '[]');
 }
 
-// Randevuları kaydet
 function saveAppointments(appointments) {
     localStorage.setItem('appointments', JSON.stringify(appointments));
 }
 
-// Randevu oluştur
+// Randevu ekleme veya düzenleme
+let editingIndex = null;
 saveBtn.addEventListener('click', () => {
     const phone = phoneInput.value.trim();
     const date = dateInput.value;
@@ -28,14 +33,20 @@ saveBtn.addEventListener('click', () => {
         alert('Geçerli bir telefon numarası girin (05XXXXXXXXX).');
         return;
     }
-
     if (!date || !time) {
         alert('Tarih ve saat seçin!');
         return;
     }
 
     const appointments = getAppointments();
-    appointments.push({ phone, date, time });
+
+    if (editingIndex !== null) {
+        appointments[editingIndex] = { phone, date, time };
+        editingIndex = null;
+    } else {
+        appointments.push({ phone, date, time });
+    }
+
     saveAppointments(appointments);
 
     phoneInput.value = '';
@@ -50,32 +61,37 @@ function renderCalendar() {
     calendar.innerHTML = '';
     const appointments = getAppointments();
 
-    // Haftalık takvim başlıkları
     const daysOfWeek = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
-    const currentWeek = getWeekDates(new Date());
+    const weekDates = getWeekDates(currentWeekStart);
 
-    currentWeek.forEach(date => {
+    weekDates.forEach(date => {
         const dayDiv = document.createElement('div');
         dayDiv.classList.add('day');
 
-        const dayName = daysOfWeek[date.getDay() === 0 ? 6 : date.getDay()-1]; // Pazar = 0
+        const dayName = daysOfWeek[date.getDay() === 0 ? 6 : date.getDay()-1];
         const dayHeader = document.createElement('h3');
         dayHeader.textContent = `${dayName} (${date.toISOString().split('T')[0]})`;
         dayDiv.appendChild(dayHeader);
 
-        // O günün randevularını ekle
-        const dayAppointments = appointments.filter(a => a.date === date.toISOString().split('T')[0]);
-        dayAppointments.sort((a,b) => a.time.localeCompare(b.time));
+        const dayAppointments = appointments
+            .filter(a => a.date === date.toISOString().split('T')[0])
+            .sort((a,b) => a.time.localeCompare(b.time));
 
         dayAppointments.forEach((a,index) => {
             const appItem = document.createElement('div');
             appItem.classList.add('appointment-item');
             appItem.textContent = `${a.time} - ${a.phone}`;
 
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Düzenle';
+            editBtn.classList.add('edit');
+            editBtn.onclick = () => editAppointment(a, index);
+
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Sil';
-            deleteBtn.onclick = () => deleteAppointment(a.date, a.time, a.phone);
+            deleteBtn.onclick = () => deleteAppointment(index);
 
+            appItem.appendChild(editBtn);
             appItem.appendChild(deleteBtn);
             dayDiv.appendChild(appItem);
         });
@@ -84,24 +100,46 @@ function renderCalendar() {
     });
 }
 
-// Randevu silme
-function deleteAppointment(date, time, phone) {
-    let appointments = getAppointments();
-    appointments = appointments.filter(a => !(a.date === date && a.time === time && a.phone === phone));
+// Randevu sil
+function deleteAppointment(index) {
+    const appointments = getAppointments();
+    appointments.splice(index,1);
     saveAppointments(appointments);
     renderCalendar();
 }
 
+// Randevu düzenle
+function editAppointment(appointment, index) {
+    phoneInput.value = appointment.phone;
+    dateInput.value = appointment.date;
+    timeInput.value = appointment.time;
+    editingIndex = index;
+}
+
 // Haftanın tarihlerini al
-function getWeekDates(currentDate) {
+function getWeekDates(startDate) {
     const week = [];
-    const first = currentDate.getDate() - currentDate.getDay() + 1; // Pazartesi
+    const dayOfWeek = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
+    const monday = new Date(startDate);
+    monday.setDate(startDate.getDate() - dayOfWeek);
     for(let i=0;i<7;i++){
-        const d = new Date(currentDate.setDate(first + i));
-        week.push(new Date(d));
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        week.push(d);
     }
     return week;
 }
 
-// Sayfa yüklendiğinde takvimi oluştur
+// Hafta değiştirme
+prevWeekBtn.addEventListener('click', () => {
+    currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+    renderCalendar();
+});
+
+nextWeekBtn.addEventListener('click', () => {
+    currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+    renderCalendar();
+});
+
+// Başlangıçta takvimi yükle
 renderCalendar();
