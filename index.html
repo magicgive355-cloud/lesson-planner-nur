@@ -3,44 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson Planner & Takvim</title>
-
-    <!-- FullCalendar CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <title>Lesson Planner</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Lesson Planner & Takvim</h1>
+        <h1>Lesson Planner</h1>
 
-        <div class="appointment-form">
-            <label for="student">Öğrenci Adı Soyadı:</label>
-            <input type="text" id="student" placeholder="Örn: Ahmet Özkul">
-
-            <label for="phone">Telefon Numarası:</label>
-            <input type="tel" id="phone" placeholder="05XX XXX XX XX">
-
-            <label for="lesson">Ders Adı:</label>
-            <input type="text" id="lesson" placeholder="Matematik, İngilizce...">
-
-            <label for="notes">Notlar / Açıklama:</label>
-            <input type="text" id="notes" placeholder="Ders notları...">
-
-            <label for="date">Tarih:</label>
+        <div class="lesson-form">
+            <input type="text" id="student" placeholder="Öğrenci Adı Soyadı">
+            <input type="tel" id="phone" placeholder="Telefon (05XXXXXXXXX)">
+            <input type="text" id="lesson" placeholder="Ders Adı">
+            <input type="text" id="notes" placeholder="Notlar / Açıklama">
             <input type="date" id="date">
-
-            <label for="time">Saat:</label>
             <input type="time" id="time">
-
-            <button id="saveAppointment">Kaydet</button>
+            <button id="saveLesson">Kaydet</button>
         </div>
 
-        <h2>Takvim</h2>
-        <div id="calendar"></div>
+        <div id="lessonsContainer"></div>
     </div>
 
-    <!-- FullCalendar JS -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
