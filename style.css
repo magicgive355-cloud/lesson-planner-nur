@@ -1,54 +1,83 @@
-// -------------------------
-// Telefon Numarası İşlemleri
-// -------------------------
-const phoneInput = document.getElementById('phone');
-const savePhoneBtn = document.getElementById('savePhone');
-
-function validatePhoneNumber(phone) {
-    const regex = /^05\d{9}$/; // Türkiye formatı: 05XXXXXXXXX
-    return regex.test(phone);
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
 }
 
-savePhoneBtn.addEventListener('click', () => {
-    const phone = phoneInput.value;
-    if (validatePhoneNumber(phone)) {
-        let numbers = JSON.parse(localStorage.getItem('phoneNumbers') || '[]');
-        if (!numbers.includes(phone)) {
-            numbers.push(phone);
-            localStorage.setItem('phoneNumbers', JSON.stringify(numbers));
-            alert('Numara kaydedildi!');
-            phoneInput.value = '';
-        } else {
-            alert('Bu numara zaten kayıtlı.');
-        }
-    } else {
-        alert('Geçerli bir telefon numarası girin (örn: 05XXXXXXXXX).');
-    }
-});
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
 
-phoneInput.addEventListener('input', () => {
-    if (!validatePhoneNumber(phoneInput.value)) {
-        phoneInput.style.borderColor = 'red';
-    } else {
-        phoneInput.style.borderColor = 'green';
-    }
-});
+h1, h2 {
+    text-align: center;
+}
 
-// -------------------------
-// Basit Ders Planı İşlemleri
-// -------------------------
-const lessonInput = document.getElementById('lesson');
-const addLessonBtn = document.getElementById('addLesson');
-const lessonList = document.getElementById('lessonList');
+.appointment-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-addLessonBtn.addEventListener('click', () => {
-    const lesson = lessonInput.value.trim();
-    if (lesson) {
-        const li = document.createElement('li');
-        li.textContent = lesson;
-        lessonList.appendChild(li);
-        lessonInput.value = '';
-    } else {
-        alert('Lütfen bir ders girin.');
-    }
-});
+.appointment-form input, .appointment-form button {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.appointment-form button {
+    background-color: #1800ad;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.appointment-form button:hover {
+    background-color: #0f007f;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.day h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.appointment-item {
+    background-color: #1800ad;
+    color: white;
+    padding: 4px;
+    margin: 4px 0;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.appointment-item button {
+    background-color: red;
+    border: none;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 5px;
+}
